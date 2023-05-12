@@ -4,23 +4,28 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
-    private float speed = 10.0f;
-    private float turnSpeed = 25.0f;
+    [SerializeField] private float horsePower = 20.0f;    
+    [SerializeField] private float turnSpeed = 25.0f;
+    [SerializeField] GameObject centerOfMass;
     private float horizontalInput;
     private float verticalInput;
+    private Rigidbody playerRb;
 
-
-
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        // player inputs
+        playerRb = GetComponent<Rigidbody>();
+        playerRb.centerOfMass=centerOfMass.transform.position;
+    }
+
+
+    void FixedUpdate()
+    {
+        
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
-        //move the vehicule forward an backward
-        transform.Translate(Vector3.forward * Time.deltaTime * speed * verticalInput);
-        // rotate the vehicule left and right
+
+        //  transform.Translate(Vector3.forward * Time.deltaTime * speed * verticalInput);
+        playerRb.AddRelativeForce(Vector3.forward *verticalInput* horsePower); 
         transform.Rotate(Vector3.up * Time.deltaTime * turnSpeed * horizontalInput);
     }
 }
